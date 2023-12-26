@@ -33,9 +33,10 @@ class Game:
         self.proximos = []
 
     def set_up(self):
-        player = Player(1, 1)
-        npc = NPC(3, 8, "../imgs/npc.png")
+        player = Player(2, 1)
+        npc = NPC(1, 1, "../imgs/npc.png")
         self.player = player
+        self.npc = npc
         self.objects.append(player)
         self.objects.append(npc)
         print("configure")
@@ -109,12 +110,16 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
                 elif event.key == pygame.K_w:
+                    self.move_unit(self.npc, [0, -1])
                     self.move_unit(self.player, [0, -1])
                 elif event.key == pygame.K_s:
+                    self.move_unit(self.npc, [0, 1])
                     self.move_unit(self.player, [0, 1])
                 elif event.key == pygame.K_a:
+                    self.move_unit(self.npc, [-1, 0])
                     self.move_unit(self.player, [-1, 0])
                 elif event.key == pygame.K_d:
+                    self.move_unit(self.npc, [1, 0])
                     self.move_unit(self.player, [1, 0])
                 elif event.key == pygame.K_RETURN:
                     distance = 1
@@ -132,13 +137,31 @@ class Game:
 
         if new_position[0] < 0 or new_position[0] > (len(self.map.map_array[0]) - 1):
             return
-
         if new_position[1] < 0 or new_position[1] > (len(self.map.map_array) - 1):
             return
 
         if self.map.map_array[new_position[1]][new_position[0]] in obstacles:
             return
 
-        self.player_has_moved = True
+        if unit == self.npc:
+            player_new_position = [self.player.position[0] + position_change[0],
+                                   self.player.position[1] + position_change[1]]
+            if player_new_position[0] < 0 or player_new_position[0] > (len(self.map.map_array[0]) - 1):
+                return
+            if player_new_position[1] < 0 or player_new_position[1] > (len(self.map.map_array) - 1):
+                return
+            if self.map.map_array[player_new_position[1]][player_new_position[0]] in obstacles:
+                return
 
+            npc_new_position = [self.npc.position[0] + position_change[0],
+                                self.npc.position[1] + position_change[1]]
+            if npc_new_position[0] < 0 or npc_new_position[0] > (len(self.map.map_array[0]) - 1):
+                return
+            if npc_new_position[1] < 0 or npc_new_position[1] > (len(self.map.map_array) - 1):
+                return
+            if self.map.map_array[npc_new_position[1]][npc_new_position[0]] in obstacles:
+                return
+
+        self.player_has_moved = True
         unit.update_position(new_position)
+

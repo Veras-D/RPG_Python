@@ -1,5 +1,6 @@
 import pygame
 import config
+from player import Player
 
 
 class NPC:

@@ -21,7 +21,7 @@ menu = Menu(screen, game)
 menu.set_up()
 
 while game.game_state != GameState.ENDED:
-    clock.tick(60)
+    clock.tick(30)
 
     if game.game_state == GameState.NONE:
         menu.update()
