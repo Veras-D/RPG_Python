@@ -153,15 +153,8 @@ class Game:
             if self.map.map_array[player_new_position[1]][player_new_position[0]] in obstacles:
                 return
 
-            npc_new_position = [self.npc.position[0] + position_change[0],
-                                self.npc.position[1] + position_change[1]]
-            if npc_new_position[0] < 0 or npc_new_position[0] > (len(self.map.map_array[0]) - 1):
-                return
-            if npc_new_position[1] < 0 or npc_new_position[1] > (len(self.map.map_array) - 1):
-                return
-            if self.map.map_array[npc_new_position[1]][npc_new_position[0]] in obstacles:
+            if self.npc.position == self.player.position:
                 return
 
         self.player_has_moved = True
         unit.update_position(new_position)
-
